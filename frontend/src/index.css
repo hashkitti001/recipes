@@ -12,8 +12,8 @@
   font-weight: 400;
 
   color-scheme: light dark;
- 
-
+  overflow-x: hidden;
+  scroll-behavior: smooth;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
