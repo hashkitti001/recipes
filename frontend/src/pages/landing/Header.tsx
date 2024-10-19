@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import {useState} from 'react'
 import { Link } from 'react-router-dom'
 import { FaSearch} from 'react-icons/fa'
 import { IoIosMenu, IoMdClose } from "react-icons/io";
@@ -12,7 +12,7 @@ const Header = () => {
 
     return (
         <header className="flex justify-between items-center p-6 w-[100vw] gap-5
-         bg-white bg-opacity-80 shadow-md max-md:flex-col h-screen lg:h-auto">
+         bg-white bg-opacity-70 shadow-md max-md:flex-col h-screen lg:h-auto">
             <div className='hidden max-md:flex w-full justify-around'>
                 <span onClick={toggleMenu}>
                     <IoIosMenu className={`text-300 text-4xl ${isOpen ? 'hidden' : 'flex'}`}/>
@@ -43,8 +43,8 @@ const Header = () => {
                     </button>
                     
                    
-                    <button className="bg-100 text-white font-bold py-2 px-6 rounded-full">
-                        Log In
+                    <button className="bg-100 font-bold py-2 px-6 rounded-full">
+                        <Link to="/auth" className='text-white'>Log In</Link>
                     </button>
                 </ul>
             </nav>

@@ -2,7 +2,7 @@ import bgImage from '../../assets/bgimage.jpg';
 import RecipeItem from '../../components/RecipeItem';
 import Header from './Header';
 import featuredRecipes from './data';
-import ConsentBanner from './ConsentBanner';
+import ConsentBanner from '../../components/ConsentBanner';
 
 const Landing = () => {
   return (
@@ -25,7 +25,7 @@ const Landing = () => {
         </button>
       </section>
 
-      {/* Featured Recipes Section */}
+   
       <section className='featured-recipes w-full h-full p-5 bg-cover bg-center'>
         <h2 className='text-xl md:text-2xl lg:text-3xl text-300 mb-4 text-center font-bold'>
           Featured Recipes
