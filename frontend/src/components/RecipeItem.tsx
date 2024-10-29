@@ -1,8 +1,10 @@
 import { IoTimer } from "react-icons/io5";
 import { FaBowlFood } from "react-icons/fa6";
 import { MdArrowOutward } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 type RecipeItemProps = {
+    _id: string;
     name: string;
     duration: number;
     servings: number;
@@ -10,7 +12,7 @@ type RecipeItemProps = {
     imgURL: string;
 }
 
-const RecipeItem: React.FC<RecipeItemProps> = ({ name, duration, servings, calories, imgURL }) => {
+const RecipeItem: React.FC<RecipeItemProps> = ({ _id, name, duration, servings, calories, imgURL }) => {
     const parseDuration = (time: number): string => {
         if (time >= 60) {
             const hourPart = Math.round(time / 60)
@@ -24,12 +26,13 @@ const RecipeItem: React.FC<RecipeItemProps> = ({ name, duration, servings, calor
             <div className="">
                 <div className="text-wrap">
                     <h3 className="text-2xl text-300 font-bold">{name}</h3>
+
                 </div>
-                <div className="flex gap-3 p-1">
+                <div className="flex gap-3 ">
                     <span>
                         <IoTimer className="text-200 text-lg" />
                     </span>
-                    <h5 className="text-2md text-300 font-bold">{parseDuration(duration)}</h5> {/* Duration of recipe */}
+                    <h5 className="text-2md text-300 font-bold">{parseDuration(duration)}</h5>
                 </div>
 
                 <div className="flex gap-3 p-1">
@@ -42,8 +45,10 @@ const RecipeItem: React.FC<RecipeItemProps> = ({ name, duration, servings, calor
                 <div className="calories flex justify-between p-4">
                     <h4 className="text-2md text-300 font-bold pr-6">{`${calories} calories`}</h4>
 
-                    <button className="bg-100 rounded-full w-8 h-8">
-                        <MdArrowOutward className="text-xl text-center"/>
+                    <button className="bg-100 rounded-full w-8 h-8 flex items-center justify-center">
+                        <Link to={`/recipe/${_id}`}>
+                            <MdArrowOutward className="text-xl text-center text-white" />
+                        </Link>
                     </button>
                 </div>
             </div>

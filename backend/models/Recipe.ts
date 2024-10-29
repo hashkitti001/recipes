@@ -6,6 +6,10 @@ const recipeSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    description: {
+        type: String, 
+        required: true,
+    },
     servings: {
         type: Number,
         required: true,
@@ -26,7 +30,7 @@ const recipeSchema = new mongoose.Schema({
         type: [String], 
         default: []
     },
-    imageURL: {
+    imgURL: {
         type: String,
     }
 });

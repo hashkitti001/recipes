@@ -11,23 +11,26 @@ interface RecipeInterface {
   duration: number;
   ingredients: Array<string>;
   instructions: Array<string>;
-  imageURL?: string;
+  imgURL?: string;
 }
 
-const NewRecipeForm = () => {
+interface NewRecipeFormProps {
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
+}
+
+const NewRecipeForm: React.FC<NewRecipeFormProps> = ({ isOpen, setIsOpen }) => {
   const token = localStorage?.recipeAccessToken;
   const [recipeData, setRecipeData] = useState<RecipeInterface>({
     name: "",
     description: "",
     servings: 0,
-    calories:0,
+    calories: 0,
     duration: 0,
     ingredients: [""],
     instructions: [""],
-    imageURL: "",
+    imgURL: "",
   });
-
-  const [isOpen, setIsOpen] = useState<boolean>(true);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -139,7 +142,7 @@ const NewRecipeForm = () => {
                 value={recipeData.servings}
                 onChange={handleChange}
               />
-              <label className="text-gray-700 px-3">Duration</label>
+              <label className="text-gray-700 px-3">Duration (in minutes)</label>
               <input
                 className="border border-gray-300 p-2 rounded bg-white mx-3 text-gray-700"
                 placeholder="Duration (minutes)"
@@ -148,10 +151,10 @@ const NewRecipeForm = () => {
                 value={recipeData.duration}
                 onChange={handleChange}
               />
-                <label className="text-gray-700 px-3">Calories</label>
-               <input
+              <label className="text-gray-700 px-3">Calories</label>
+              <input
                 className="border border-gray-300 p-2 rounded bg-white mx-3 text-gray-700"
-                placeholder="Calories(in kcal))"
+                placeholder="Calories (in kcal)"
                 type="number"
                 name="calories"
                 value={recipeData.calories}
@@ -223,15 +226,15 @@ const NewRecipeForm = () => {
                 className="border border-gray-300 p-2 rounded bg-white mx-3 text-gray-700"
                 placeholder="Image URL (optional)"
                 type="text"
-                name="imageURL"
-                value={recipeData.imageURL}
+                name="imgURL"
+                value={recipeData.imgURL}
                 onChange={handleChange}
               />
 
               <input
                 type="submit"
                 value="Create"
-                className="self-center bg-100 text-white py-2 px-4 cursor-pointer w-11/12 rounded-2xl"
+                className="self-center bg-blue-500 text-white py-2 px-4 cursor-pointer w-11/12 rounded-2xl"
               />
             </form>
           </div>

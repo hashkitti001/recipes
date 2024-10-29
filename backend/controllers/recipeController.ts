@@ -12,12 +12,11 @@ const getAllRecipes = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-// Get recipe by ID
+
 const getRecipeById = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
     
-    // Check if the ID is a valid Mongoose ObjectId
     if (!mongoose.Types.ObjectId.isValid(id)) {
       res.status(400).json({ error: 'Invalid recipe ID' });
     }
@@ -37,8 +36,8 @@ const getRecipeById = async (req: Request, res: Response): Promise<void> => {
 
 const createNewRecipe = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { name, servings, duration, ingredients, instructions, calories } = req.body;
-
+    const { name, description, servings, duration, ingredients, instructions, calories, imgURL } = req.body;
+    console.log(req.body)
     
     if (!name || !servings || !duration) {
       await res.status(400).json({ error: 'Name, servings, and duration are required' });
@@ -52,11 +51,13 @@ const createNewRecipe = async (req: Request, res: Response): Promise<void> => {
    
     const newRecipe = new Recipe({
       name,
+      description,
       servings,
       duration,
       calories,
       ingredients: ingredients || [],
-      instructions: instructions || []
+      instructions: instructions || [],
+      imgURL
     });
 
     await newRecipe.save();
