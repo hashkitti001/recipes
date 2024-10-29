@@ -11,22 +11,22 @@ async function loginUser(req: Request, res: Response): Promise<void> {
 
     if (!email || !password) {
       await res.status(400).json({ message: "Please provide both email and password" });
-      return; // Prevent further execution
+      return;
     }
 
     const user = await User.findOne({ email });
     if (!user) {
       await res.status(404).json({ message: "User doesn't exist. Try signing up" });
-      return; // Prevent further execution
+      return; 
     }
 
     const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword) {
       await res.status(400).json({ message: "Invalid password" });
-      return; // Prevent further execution
+      return; 
     }
 
-    const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ userId: user._id, username: user.name }, JWT_SECRET, { expiresIn: '1h' });
     await res.status(200).json({
       message: "Login successful",
       token,

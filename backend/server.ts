@@ -1,4 +1,4 @@
-import express from 'express';
+import express from 'express'
 import cors from 'cors'
 import publicRouter from './routes/publicRoutes';
 import privateRouter from './routes/privateRoutes'

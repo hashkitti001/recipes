@@ -1,5 +1,10 @@
 import { ChangeEvent, useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa6';
+import axios from 'axios'
+import countriesData from '../countries';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/ReactToastify.css'
+
 
 interface SignupDetails {
     name: string;
@@ -9,7 +14,7 @@ interface SignupDetails {
     country: string;
 }
 
-const Signup: React.FC = () => {
+const Signup = () => {
     const [signupDetails, setSignupDetails] = useState<SignupDetails>({
         name: '',
         email: '',
@@ -17,8 +22,8 @@ const Signup: React.FC = () => {
         confirmPassword: '',
         country: ''
     });
-    
-    const [showPassword, setShowPassword] = useState<boolean>(false); 
+
+    const [showPassword, setShowPassword] = useState<boolean>(false);
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -29,61 +34,72 @@ const Signup: React.FC = () => {
         setShowPassword((prev) => !prev);
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-      
-        console.log('Signup Details:', signupDetails);
+        try {
+            const response = await axios.post('http://localhost:3000/auth/signup', signupDetails)
+            if (response.status === 201) {
+                //Replace with Toastify
+                toast.success("Sign up successful!")
+                
+            }
+            toast.info(response.data)
+            
+        } catch (e) {
+           toast.error("Couldn't sign up!")
+           console.error(e)
+        }
     };
 
     return (
         <div>
+            <ToastContainer/>
             <form className='flex flex-col w-full' onSubmit={handleSubmit}>
-                <input 
-                    className="mb-4 p-3 rounded bg-white outline-none text-300" 
-                    type="text" 
+                <input
+                    className="mb-4 p-3 rounded bg-white outline-none text-300"
+                    type="text"
                     name="name"
                     value={signupDetails.name}
                     onChange={handleInputChange}
                     placeholder='Name'
                     autoComplete='false'
                 />
-                <input 
-                    className="mb-4 p-3 rounded bg-white outline-none text-300" 
-                    type="email" 
+                <input
+                    className="mb-4 p-3 rounded bg-white outline-none text-300"
+                    type="email"
                     name="email"
                     value={signupDetails.email}
                     onChange={handleInputChange}
-                    placeholder='Email' 
+                    placeholder='Email'
                     autoComplete='false'
                 />
-                
+                   
                 <select
-                    className="mb-4 p-3 rounded bg-white outline-none text-300" 
+                    className="mb-4 p-3 rounded bg-white outline-none text-300"
                     name="country"
                     value={signupDetails.country}
                     onChange={handleInputChange}
-                    
+
                 >
-                    <option value="" disabled>Select Country</option>
-                    <option value="USA">USA</option>
-                    <option value="Canada">Canada</option>
-                    <option value="UK">UK</option>
-                    <option value="Australia">Australia</option>
                    
+                    {countriesData.map((country) => (
+                        <option value={country.name}>{country.name}</option>
+                    ))}
+
                 </select>
-             
+
                 <div className="relative mb-4">
-                    <input 
-                        className="p-3 rounded bg-white outline-none w-full text-300" 
-                        type={showPassword ? "text" : "password"} 
+                    <input
+                        className="p-3 rounded bg-white outline-none w-full text-300"
+                        type={showPassword ? "text" : "password"}
                         name="password"
                         value={signupDetails.password}
                         onChange={handleInputChange}
                         placeholder='Password'
                         autoComplete='false'
                     />
-                    <i 
-                        className='text-3xl text-100 absolute right-2 top-1/2 transform -translate-y-1/2 cursor-pointer' 
+                    <i
+                        className='text-3xl text-100 absolute right-2 top-1/2 transform -translate-y-1/2 cursor-pointer'
                         onClick={togglePasswordVisibility}
                     >
                         {showPassword ? <FaEyeSlash /> : <FaEye />}
@@ -91,27 +107,28 @@ const Signup: React.FC = () => {
                 </div>
 
                 <div className="relative mb-4">
-                    <input 
-                        className="p-3 rounded bg-white outline-none w-full text-300" 
-                        type={showPassword ? "text" : "password"} 
+                    <input
+                        className="p-3 rounded bg-white outline-none w-full text-300"
+                        type={showPassword ? "text" : "password"}
                         name="confirmPassword"
                         value={signupDetails.confirmPassword}
                         onChange={handleInputChange}
                         placeholder='Confirm Password'
                         autoComplete='false'
                     />
-                    <i 
-                        className='text-3xl text-100 absolute right-2 top-1/2 transform -translate-y-1/2 cursor-pointer' 
+                    <i
+                        className='text-3xl text-100 absolute right-2 top-1/2 transform -translate-y-1/2 cursor-pointer'
                         onClick={togglePasswordVisibility}
                     >
                         {showPassword ? <FaEyeSlash /> : <FaEye />}
                     </i>
                 </div>
 
-                <input 
-                    className="bg-100 mb-3 p-3 rounded outline-none" 
-                    type="submit" 
-                    value="Sign Up" 
+                <input
+                    className="bg-100 mb-3 p-3 rounded outline-none cursor-pointer"
+                    type="submit"
+                    value="Sign Up"
+                    onClick={handleSubmit}
                 />
             </form>
         </div>
