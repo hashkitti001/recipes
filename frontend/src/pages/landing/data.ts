@@ -9,6 +9,7 @@ type RecipeItemProps = {
 const featuredRecipes: Array<RecipeItemProps> = [
     {
         "name": "Boiled Yam",
+        "creator": "Batman",
         "duration": 123,
         "servings": 4,
         "calories": 79,
@@ -16,6 +17,7 @@ const featuredRecipes: Array<RecipeItemProps> = [
     },
     {
         "name": "Spaghetti Bolognese",
+        "creator": "Lisa Lisa",
         "duration": 45,
         "servings": 3,
         "calories": 560,
@@ -23,6 +25,7 @@ const featuredRecipes: Array<RecipeItemProps> = [
     },
     {
         "name": "Grilled Chicken Salad",
+        "creator": "Nyongo Lupita",
         "duration": 30,
         "servings": 2,
         "calories": 350,
@@ -30,6 +33,7 @@ const featuredRecipes: Array<RecipeItemProps> = [
     },
     {
         "name": "Vegetable Stir Fry",
+        "creator": "Kent Curry",
         "duration": 25,
         "servings": 4,
         "calories": 220,
@@ -37,6 +41,7 @@ const featuredRecipes: Array<RecipeItemProps> = [
     },
     {
         "name": "Tuna Sandwich",
+        "creator": "Tina Fry",
         "duration": 15,
         "servings": 1,
         "calories": 280,
@@ -44,6 +49,7 @@ const featuredRecipes: Array<RecipeItemProps> = [
     },
     {
         "name": "Beef Tacos",
+        "creator": "Che Guevera",
         "duration": 35,
         "servings": 5,
         "calories": 400,
