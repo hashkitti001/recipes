@@ -29,7 +29,6 @@ const Landing = () => {
         </button>
       </section>
 
-
       <section className='featured-recipes w-full h-full p-5 bg-cover bg-center'>
         <h2 className='text-xl md:text-2xl lg:text-3xl text-300 mb-4 text-center font-bold'>
           Featured Recipes
@@ -39,6 +38,7 @@ const Landing = () => {
           {featuredRecipes.map((item) => (
             <RecipeItem
               key={item.name}
+              _id={item.name}
               name={item.name}
               duration={item.duration}
               calories={item.calories}

@@ -1,24 +1,24 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-// import { FaSearch } from 'react-icons/fa';
 import { IoIosMenu, IoMdClose } from 'react-icons/io';
 import { RxAvatar } from 'react-icons/rx';
+import { FiSettings } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 
 const Header: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const [isDDOpen, setIsDDOpen] = useState(false)
+    const [isDDOpen, setIsDDOpen] = useState(false);
     const navigate = useNavigate();
     const token = localStorage.getItem('recipeAppToken');
-    let username = '';
+    let username = JSON.parse(atob(token!.split(".")[0])) || "User";
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
     };
 
     const toggleDropDown = () => {
-        setIsDDOpen(!isDDOpen)
-    }
+        setIsDDOpen(!isDDOpen);
+    };
 
     if (token) {
         try {
@@ -30,7 +30,7 @@ const Header: React.FC = () => {
     }
 
     const handleLogout = () => {
-        localStorage.removeItem("token");
+        localStorage.removeItem("recipeAppToken");
         toast.info("Successfully logged out!");
         setTimeout(() => {
             navigate('/auth');
@@ -38,61 +38,83 @@ const Header: React.FC = () => {
     };
 
     return (
-        <header className="flex justify-between items-center w-[100vw] gap-5 bg-white shadow-md max-md:flex-col max-sm:h-screen lg:h-10 lg:p-10">
-            <div className='hidden max-md:flex w-full justify-around'>
-                <span onClick={toggleMenu} className='mt-5'>
-                    <IoIosMenu className={`text-300 text-4xl ${isOpen ? 'hidden' : 'flex'}`} />
-                </span>
-                <span></span>
-                <span onClick={toggleMenu}>
-                    <IoMdClose className={`text-300 text-4xl ${isOpen ? 'flex' : 'hidden'}`} />
-                </span>
-            </div>
-            <span className="logo font-bold text-xl">
-                <Link className="text-gray-700 max-md:hidden" to="/">
-                    Recipes
-                </Link>
-            </span>
+        <header className="bg-white shadow-md w-[100vw] flex justify-between items-center py-2 px-5">
+            {/* Mobile Menu Toggle */}
+            <div className="flex justify-between items-center px-5 py-4 lg:hidden">
+                <div onClick={toggleMenu} className="text-3xl cursor-pointer">
+                    {isOpen ? <IoMdClose className="text-black" /> : <IoIosMenu className="text-black" />}
+                </div>
 
-            <nav className={`flex gap-5 items-center ${isOpen ? 'flex-col h-screen' : 'hidden'} lg:flex h-auto`}>
-                <ul className="flex gap-5 max-md:flex-col h-full">
-                    <li className="text-300 font-bold text-md">
-                        <Link className="text-300" to="/">Home</Link>
+            </div>
+            <Link className="font-bold text-xl text-black" to="/">Recipes</Link>
+            {/* Mobile Menu */}
+            <nav
+                className={`fixed inset-0 bg-white flex flex-col items-center justify-center gap-8 z-50 transform ${
+                    isOpen ? 'translate-x-0' : '-translate-x-full'
+                } transition-transform duration-300 lg:static lg:flex lg:flex-row lg:transform-none`}
+            >
+                <ul className="text-left text-lg lg:flex lg:gap-6">
+                    <li>
+                        <Link to="/" className="font-bold text-2xl max-md:text-3xl text-gray-900 hover:text-100" onClick={toggleMenu}>
+                            Home
+                        </Link>
                     </li>
-                    <li className="text-300 font-bold text-md">
-                        <Link className="text-300" to="/recipes">Recipes</Link>
+                    <li>
+                        <Link to="/recipes" className="font-bold text-2xl max-md:text-3xl text-gray-900 hover:text-100" onClick={toggleMenu}>
+                            Recipes
+                        </Link>
                     </li>
-                    <li className="text-300 font-bold text-md">
-                        <Link className="text-300" to="/about-us">About Us</Link>
+                    <li>
+                        <Link to="/about-us" className="font-bold text-2xl max-md:text-3xl text-gray-900 hover:text-100" onClick={toggleMenu}>
+                            About Us
+                        </Link>
                     </li>
-                 
+                    <li className='flex md:hidden lg:hidden gap-6'>
+                        <FiSettings className='text-3xl text-black hover:text-100'/>
+                        <Link to="/about-us" className="font-bold text-2xl max-md:text-3xl text-gray-900 hover:text-100" onClick={toggleMenu}>
+                            Profile Settings
+                        </Link>
+                    </li>
+                    <button className='bg-200 text-white p-3 rounded-lg w-full md:hidden lg:hid'>Log Out</button>
                 </ul>
 
-                <ul className="flex items-center gap-5">
-                    {/* <button className="rounded-full outline-none h-10 w-10 p-3 bg-300">
-                        <FaSearch />
-                    </button> */}
-
+                {/* Avatar and Actions */}
+                <div className="mt-6 flex flex-col items-center gap-6 lg:mt-0 lg:flex-row">
                     {token ? (
-                        <div className='flex items-center mx-3 relative'>
-                            <span className='mr-2 text-300'>
-                                <RxAvatar className="text-4xl" onClick={toggleDropDown}/>
-                            </span>
-                            <div className={`absolute top-14 z-50 bg-white p-5 w-32 flex-col ${isDDOpen ? 'hidden' : 'flex'} z-[1]`}>
-                                <button className='p-2 bg-red-600 text-white w-full rounded-2xl' onClick={handleLogout}>
+                        <div className="relative max-md:hidden">
+                            <div className='flex items-center'>
+                            <RxAvatar
+                                className="text-5xl text-black cursor-pointer"
+                                onClick={toggleDropDown}
+                            />
+                            <p className='text-300 text-lg text-wrap pl-3'>{`${username}`}</p>
+                            </div>
+                           
+                            <div
+                                className={`absolute top-16 right-0 bg-white shadow-lg rounded-lg p-4 w-48 ${
+                                    isDDOpen ? 'block' : 'hidden'
+                                }`}
+                            >
+                                <div className="flex items-center gap-2 py-2 px-3 hover:bg-gray-100 rounded-md cursor-pointer">
+                                    <FiSettings className="text-lg text-black" />
+                                    <Link to="/profile-settings" className="text-black">
+                                        Profile Settings
+                                    </Link>
+                                </div>
+                                <button
+                                    onClick={handleLogout}
+                                    className="mt-2 w-full bg-red-600 text-white py-2 rounded-md hover:bg-red-700"
+                                >
                                     Log Out
                                 </button>
                             </div>
-                            <div>
-                                <p className='text-300'>Welcome!<br />{username}</p>
-                            </div>
                         </div>
                     ) : (
-                        <button className="bg-100 font-bold py-2 px-6 rounded-full">
-                            <Link to="/auth" className='text-white'>Log In</Link>
+                        <button className="bg-100 text-white py-2 px-6 rounded-full hover:opacity-85">
+                            <Link className="text-white" to="/auth">Log In</Link>
                         </button>
                     )}
-                </ul>
+                </div>
             </nav>
         </header>
     );
