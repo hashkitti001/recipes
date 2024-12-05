@@ -45,15 +45,11 @@ async function signupUser(req: Request, res: Response) {
   try {
     const { name, email, password, confirmPassword, country } = req.body;
     console.log(name, email, password, confirmPassword, country )
-    if (!email || !password || !name || !confirmPassword || !country) {
+    if (!email || !password || !name || !country) {
       await res.status(400).json({ error: "All fields are required" });
       return; 
     }
 
-    if (password !== confirmPassword) {
-      await res.status(400).json({ error: "Passwords do not match" });
-      return; 
-    }
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
