@@ -3,15 +3,16 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import Header from "./landing/Header";
 import Footer from "../components/Footer";
+import { useNavigate } from "react-router-dom";
 
 const ProfilePage = () => {
     const [user, setUser] = useState({
-        name: "", // Placeholder username
-        email: "", // Placeholder email
-        createdAt: "", // Placeholder account creation date
+        name: "", 
+        email: "", 
+        createdAt: "",
         password: ""
     });
-
+    const navigate = useNavigate()
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isEditMode, setIsEditMode] = useState(false);
     const [updatedUser, setUpdatedUser] = useState({ ...user });
@@ -39,9 +40,10 @@ const ProfilePage = () => {
 
     const handleDeleteAccount = async () => {
         try {
-            await axios.delete("/api/user", { headers: { Authorization: `Bearer ${token}` } });
+            await axios.delete("http://localhost:3000/api/delete-user", { headers: { Authorization: `Bearer ${token}` } });
             setIsDeleteModalOpen(false);
             toast.success("Your account has been deleted successfully.");
+            navigate('/auth')
         } catch (error) {
             toast.error("An error occurred while deleting the account.");
         }
@@ -58,8 +60,8 @@ const ProfilePage = () => {
 
     const handleSaveProfile = async () => {
         try {
-            // Call API to save the updated profile data
-            const response = await axios.put("/api/user", updatedUser, {
+        
+            const response = await axios.put("http://localhost:3000/api/update-user", updatedUser, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setUser(response.data);
@@ -72,7 +74,7 @@ const ProfilePage = () => {
 
     return (
         <div className="flex flex-col min-h-screen bg-gray-100">
-            {/* Header */}
+          
             <Header />
 
             <div className="flex-grow bg-white rounded-lg shadow-lg w-full p-6 space-y-6">

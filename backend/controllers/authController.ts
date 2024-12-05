@@ -92,8 +92,57 @@ async function getUser(req:Request, res:Response) {
     res.status(200).json({user})
     return;
 }
+async function updateUser(req: Request, res: Response) {
+  try {
+    const { name, password, email} = req.body;
+    const userId = req.body.user_id
+ 
+    if (!name || !password || !email) {
+      res.status(400).json({ error: 'Missing required fields' });
+      return;
+    }
+
+    
+    const hashedPassword = await bcrypt.hash(password, 10); 
+
+    const updatedUser = await User.findByIdAndUpdate(userId, {
+      name,
+      password: hashedPassword,
+      email,
+    }, { new: true });
+    if (!updatedUser) {
+      res.status(404).json({ error: 'User not found' });
+      return
+    }
+
+    res.json(updatedUser);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
+async function deleteUser(req: Request, res: Response) {
+ 
+  try {
+    const userId = req.body.user_id;
+
+   
+    const deletedUser = await User.findByIdAndDelete(userId);
+
+    if (!deletedUser) {
+      res.status(404).json({ error: 'User not found' });
+      return
+    }
+    res.status(200).json({ message: 'User deleted successfully' });
+    return
+  } catch (e:any) {
+    console.error('Error deleting user:', e);
+    res.status(500).json({ error: 'Internal server error' });
+    return
+  }
+}
 async function dummy(req: Request, res: Response): Promise<void> {
   await res.status(200).json({ message: "Server is online" });
 }
 
-export { loginUser, signupUser, getUser, dummy };
+export { loginUser, signupUser, getUser, dummy, updateUser, deleteUser};
