@@ -49,7 +49,7 @@ const Header: React.FC = () => {
             <Link className="font-bold text-xl text-black" to="/">Recipes</Link>
             {/* Mobile Menu */}
             <nav
-                className={`fixed inset-0 bg-white flex flex-col items-center justify-center gap-8 z-10 transform ${
+                className={`fixed inset-0 bg-white flex flex-col  items-center justify-center gap-10 z-10 transform ${
                     isOpen ? 'translate-x-0' : '-translate-x-full'
                 } transition-transform duration-300 lg:static lg:flex lg:flex-row lg:transform-none`}
             >
@@ -71,7 +71,7 @@ const Header: React.FC = () => {
                     </li>
                     <li className='flex md:hidden lg:hidden gap-6'>
                         <FiSettings className='text-3xl text-black hover:text-100'/>
-                        <Link to="/about-us" className="font-bold text-2xl max-md:text-3xl text-gray-900 hover:text-100" onClick={toggleMenu}>
+                        <Link to="/profile-settings" className="font-bold text-2xl max-md:text-3xl text-gray-900 hover:text-100" onClick={toggleMenu}>
                             Profile Settings
                         </Link>
                     </li>

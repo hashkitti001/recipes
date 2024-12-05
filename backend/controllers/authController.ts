@@ -83,9 +83,17 @@ async function signupUser(req: Request, res: Response): Promise<void> {
     await res.status(500).json({ error: "Signup failed" });
   }
 }
-
+async function getUser(req:Request, res:Response) {
+    const user = await User.findById(req.body.user_id)
+    if(!user){
+      res.status(404).json({"message": "No user with that ID exists."})
+      return
+    }
+    res.status(200).json({user})
+    return;
+}
 async function dummy(req: Request, res: Response): Promise<void> {
   await res.status(200).json({ message: "Server is online" });
 }
 
-export { loginUser, signupUser, dummy };
+export { loginUser, signupUser, getUser, dummy };
