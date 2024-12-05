@@ -41,24 +41,24 @@ async function loginUser(req: Request, res: Response): Promise<void> {
   }
 }
 
-async function signupUser(req: Request, res: Response): Promise<void> {
+async function signupUser(req: Request, res: Response) {
   try {
     const { name, email, password, confirmPassword, country } = req.body;
 
     if (!email || !password || !name || !confirmPassword || !country) {
       await res.status(400).json({ error: "All fields are required" });
-      return; // Prevent further execution
+      return; 
     }
 
     if (password !== confirmPassword) {
       await res.status(400).json({ error: "Passwords do not match" });
-      return; // Prevent further execution
+      return; 
     }
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       await res.status(400).json({ error: "User already exists. Please log in." });
-      return; // Prevent further execution
+      return;
     }
 
     const salt = await bcrypt.genSalt(10);

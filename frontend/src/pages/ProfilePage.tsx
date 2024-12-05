@@ -43,6 +43,7 @@ const ProfilePage = () => {
             await axios.delete("http://localhost:3000/api/delete-user", { headers: { Authorization: `Bearer ${token}` } });
             setIsDeleteModalOpen(false);
             toast.success("Your account has been deleted successfully.");
+            localStorage.removeItem('recipeAccessToken')
             navigate('/auth')
         } catch (error) {
             toast.error("An error occurred while deleting the account.");
