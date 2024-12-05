@@ -10,7 +10,7 @@ const Header: React.FC = () => {
     const [isDDOpen, setIsDDOpen] = useState(false);
     const navigate = useNavigate();
     const token = localStorage.getItem('recipeAppToken');
-    let username = JSON.parse(atob(token!.split(".")[0])) || "User";
+    let username = ""
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
@@ -22,7 +22,7 @@ const Header: React.FC = () => {
 
     if (token) {
         try {
-            const payload = JSON.parse(atob(token.split('.')[1]));
+            const payload = JSON.parse(atob(token!.split('.')[1]));
             username = payload.username || "User";
         } catch (error) {
             console.error("Error decoding token:", error);
@@ -49,7 +49,7 @@ const Header: React.FC = () => {
             <Link className="font-bold text-xl text-black" to="/">Recipes</Link>
             {/* Mobile Menu */}
             <nav
-                className={`fixed inset-0 bg-white flex flex-col items-center justify-center gap-8 z-50 transform ${
+                className={`fixed inset-0 bg-white flex flex-col items-center justify-center gap-8 z-10 transform ${
                     isOpen ? 'translate-x-0' : '-translate-x-full'
                 } transition-transform duration-300 lg:static lg:flex lg:flex-row lg:transform-none`}
             >

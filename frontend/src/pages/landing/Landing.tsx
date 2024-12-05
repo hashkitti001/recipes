@@ -4,6 +4,7 @@ import Header from './Header';
 import featuredRecipes from './data';
 import ConsentBanner from '../../components/ConsentBanner';
 import { Link } from 'react-router-dom';
+import Footer from '../../components/Footer';
 
 const Landing = () => {
   return (
@@ -50,6 +51,7 @@ const Landing = () => {
       </section>
 
       <ConsentBanner />
+      <Footer/>
     </div>
   );
 };

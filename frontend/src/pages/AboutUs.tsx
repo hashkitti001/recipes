@@ -1,3 +1,4 @@
+import Footer from "../components/Footer";
 import Header from "./landing/Header";
 import { FaPhone, FaEnvelope, FaLinkedin } from "react-icons/fa";
 
@@ -109,6 +110,7 @@ const AboutUs = () => {
           </div>
         </div>
       </section>
+      <Footer/>
     </div>
   );
 };
