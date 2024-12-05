@@ -5,6 +5,6 @@ const publicRouter: Router = express.Router()
 
 publicRouter.post('/auth/login', loginUser)
 publicRouter.post('/auth/signup', signupUser)
-publicRouter.get('/dummy', dummy)
+// publicRouter.get('/dummy', dummy)
 
 export default publicRouter

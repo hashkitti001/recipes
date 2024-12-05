@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import User from '../models/User';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+require("dotenv").config()
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret';
 
@@ -10,31 +11,33 @@ async function loginUser(req: Request, res: Response): Promise<void> {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      await res.status(400).json({ message: "Please provide both email and password" });
+      res.status(400).json({ message: "Please provide both email and password" });
       return;
     }
 
     const user = await User.findOne({ email });
     if (!user) {
-      await res.status(404).json({ message: "User doesn't exist. Try signing up" });
+      res.status(404).json({ message: "User doesn't exist. Try signing up" });
       return; 
     }
 
     const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword) {
-      await res.status(400).json({ message: "Invalid password" });
+      res.status(400).json({ message: "Invalid password" });
       return; 
     }
 
     const token = jwt.sign({ userId: user._id, username: user.name }, JWT_SECRET, { expiresIn: '1h' });
-    await res.status(200).json({
+    res.status(200).json({
       message: "Login successful",
       token,
     });
+    return
 
   } catch (error) {
     console.error("Login error:", error);
-    await res.status(500).json({ error: "Login failed" });
+    res.status(500).json({ error: "Login failed" });
+    return
   }
 }
 
