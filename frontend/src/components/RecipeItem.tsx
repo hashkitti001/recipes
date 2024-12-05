@@ -30,7 +30,7 @@ const RecipeItem: React.FC<RecipeItemProps> = ({ _id, name, creator, duration, s
 
     const handleDelete = async (itemId: string) => {
         try {
-            const response = await axios.delete(`http://localhost:3000/api/recipes/${itemId}`, {
+            const response = await axios.delete(`https://recipes-backend-0meq.onrender.com/api/recipes/${itemId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

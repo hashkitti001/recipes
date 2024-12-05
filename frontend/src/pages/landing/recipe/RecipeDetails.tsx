@@ -28,7 +28,7 @@ const RecipeDetails: React.FC = () => {
 
     const fetchRecipe = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/recipe/${id}`, {
+        const response = await axios.get(`https://recipes-backend-0meq.onrender.com/api/recipe/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 

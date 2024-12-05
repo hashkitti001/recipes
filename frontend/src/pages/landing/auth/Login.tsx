@@ -28,7 +28,7 @@ const Login = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         try {
-            const response = await axios.post('http://localhost:3000/auth/login', loginDetails)
+            const response = await axios.post('https://recipes-backend-0meq.onrender.com/auth/login', loginDetails)
             if (response.status === 200) {
                 toast.success("Successfully logged in!")
                 localStorage.setItem("recipeAppToken", response.data.token)

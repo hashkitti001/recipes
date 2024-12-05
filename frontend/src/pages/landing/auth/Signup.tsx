@@ -37,7 +37,7 @@ const Signup = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:3000/auth/signup', signupDetails)
+            const response = await axios.post('https://recipes-backend-0meq.onrender.com/auth/signup', signupDetails)
             if (response.status === 201) {
                 //Replace with Toastify
                 toast.success("Sign up successful!")

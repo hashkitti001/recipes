@@ -23,7 +23,7 @@ const ProfilePage = () => {
         const fetchUser = async () => {
             try {
                 console.log(userId)
-                const response = await axios.get(`http://localhost:3000/api/user/${userId}`, {
+                const response = await axios.get(`https://recipes-backend-0meq.onrender.com/api/user/${userId}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -40,7 +40,7 @@ const ProfilePage = () => {
 
     const handleDeleteAccount = async () => {
         try {
-            await axios.delete("http://localhost:3000/api/delete-user", { headers: { Authorization: `Bearer ${token}` } });
+            await axios.delete("https://recipes-backend-0meq.onrender.com/api/delete-user", { headers: { Authorization: `Bearer ${token}` } });
             setIsDeleteModalOpen(false);
             toast.success("Your account has been deleted successfully.");
             localStorage.removeItem('recipeAccessToken')
@@ -62,7 +62,7 @@ const ProfilePage = () => {
     const handleSaveProfile = async () => {
         try {
         
-            const response = await axios.put("http://localhost:3000/api/update-user", updatedUser, {
+            const response = await axios.put("https://recipes-backend-0meq.onrender.com/api/update-user", updatedUser, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setUser(response.data);

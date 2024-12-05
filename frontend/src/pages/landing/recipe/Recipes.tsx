@@ -32,7 +32,7 @@ const Recipes = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/recipes", {
+        const response = await axios.get("https://recipes-backend-0meq.onrender.com/api/recipes", {
           headers: {
             Authorization: `Bearer ${token}`,
           },

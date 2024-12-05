@@ -54,7 +54,7 @@ const NewRecipeForm: React.FC<NewRecipeFormProps> = ({ isOpen, setIsOpen }) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const options = {
-      url: "http://localhost:3000/api/recipe",
+      url: "https://recipes-backend-0meq.onrender.com/api/recipe",
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
