@@ -6,9 +6,10 @@ import BackToTop from "../../../components/BackToTop";
 import Header from "../Header";
 import NewRecipeForm from "./NewRecipeForm";
 import RecipeItem from "../../../components/RecipeItem";
-
+import 'react-toastify/ReactToastify.min.css'
+import { FaSearch } from "react-icons/fa";
 interface RecipeInterface {
-  _id: string; // Changed to string assuming MongoDB ObjectID format; modify as needed
+  _id: string;
   name: string;
   description: string;
   servings: number;
@@ -21,14 +22,21 @@ interface RecipeInterface {
 
 const Recipes = () => {
   const [fetchedRecipes, setFetchedRecipes] = useState<RecipeInterface[]>([]);
+  const [filteredRecipes, setFilteredRecipes] = useState<RecipeInterface[]>([]);
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const token = localStorage.getItem("recipeAppToken");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/recipes");
+        const response = await axios.get("http://localhost:3000/api/recipes", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setFetchedRecipes(response.data.allRecipes);
-        console.log(response.data.allRecipes);
+        setFilteredRecipes(response.data.allRecipes);
       } catch (error) {
         toast.error("Failed to fetch recipes");
         console.error("Error fetching recipes:", error);
@@ -41,16 +49,38 @@ const Recipes = () => {
     setIsOpen((prev) => !prev);
   };
 
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const term = event.target.value.toLowerCase();
+    setSearchTerm(term);
+    const filtered = fetchedRecipes.filter((recipe) =>
+      recipe.name.toLowerCase().includes(term)
+    );
+    setFilteredRecipes(filtered);
+  };
+
   return (
     <div className="bg-gray-100 w-screen h-screen relative">
       <ToastContainer />
       <Header />
       <h1 className="text-gray-800 text-3xl font-semibold p-5">Recipes</h1>
       <NewRecipeForm isOpen={isOpen} setIsOpen={setIsOpen} />
-      
+
       <div className="layout-container flex-col gap-8 px-5">
         <section className="m-5 p-6 bg-white shadow-md rounded-lg">
           <h2 className="text-gray-700 text-xl mb-4">Available Recipes</h2>
+
+          {/* Search Bar */}
+          
+          <div className="relative flex justify-center">
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={handleSearch}
+            placeholder="Search recipes..."
+            className="w-4/5 mb-4 p-3 border bg-400 outline-none border-none rounded-full text-black"
+          />
+          <FaSearch className="text-2xl font-light text-100 right-36 top-2 absolute"/>
+      </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <button
               onClick={toggleForm}
@@ -59,8 +89,8 @@ const Recipes = () => {
             >
               <GoPlus className="text-4xl" />
             </button>
-            
-            {fetchedRecipes.map((recipe) => (
+
+            {filteredRecipes.map((recipe) => (
               <RecipeItem
                 key={recipe._id}
                 _id={recipe._id}
