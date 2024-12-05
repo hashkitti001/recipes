@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Loader from './components/Loader'
+import ProfilePage from "./pages/ProfilePage";
 // Lazy-loaded components
 const Landing = lazy(() => import("./pages/landing/Landing"));
 const AuthPage = lazy(() => import("./pages/landing/auth/AuthPage"));
@@ -19,6 +20,7 @@ const App = () => {
           <Route path="/recipes" element={<Recipes />} />
           <Route path="/recipe/:id" element={<RecipeDetails />} />
           <Route path="/about-us" element={<AboutUs />} />
+          <Route path="profile-settings" element={<ProfilePage/>}/>
         </Routes>
       </Suspense>
     </BrowserRouter>

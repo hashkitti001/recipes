@@ -39,6 +39,7 @@ const Landing = () => {
           {featuredRecipes.map((item) => (
             <RecipeItem
               key={item.name}
+              creator={item.creator}
               _id={item.name}
               name={item.name}
               duration={item.duration}

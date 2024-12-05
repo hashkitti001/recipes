@@ -1,4 +1,5 @@
 type RecipeItemProps = {
+    creator: string;
     name: string;
     duration: number;
     servings: number;
