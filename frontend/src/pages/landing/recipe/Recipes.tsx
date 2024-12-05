@@ -8,8 +8,10 @@ import NewRecipeForm from "./NewRecipeForm";
 import RecipeItem from "../../../components/RecipeItem";
 import 'react-toastify/ReactToastify.min.css'
 import { FaSearch } from "react-icons/fa";
+import Footer from "../../../components/Footer";
 interface RecipeInterface {
   _id: string;
+  creator: string;
   name: string;
   description: string;
   servings: number;
@@ -94,6 +96,7 @@ const Recipes = () => {
               <RecipeItem
                 key={recipe._id}
                 _id={recipe._id}
+                creator={recipe.creator}
                 name={recipe.name}
                 duration={recipe.duration}
                 servings={recipe.servings}
@@ -105,6 +108,7 @@ const Recipes = () => {
         </section>
         <BackToTop />
       </div>
+      <Footer/>
     </div>
   );
 };

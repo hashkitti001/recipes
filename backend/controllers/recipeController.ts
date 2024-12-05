@@ -59,6 +59,7 @@ const createNewRecipe = async (req: Request, res: Response): Promise<void> => {
    
     const newRecipe = new Recipe({
       name,
+      creator: req.body.user,
       description,
       servings,
       duration,
@@ -68,7 +69,11 @@ const createNewRecipe = async (req: Request, res: Response): Promise<void> => {
       imgURL
     });
 
-    await newRecipe.save();
+    await newRecipe.save().catch((error) => {
+      console.error('Error saving recipe:', error);
+      throw error;
+    });
+    
     res.status(201).json({ message: 'Recipe created successfully', recipe: newRecipe });
     return
   } catch (error) {
@@ -86,6 +91,7 @@ const deleteRecipe = async (req: Request, res: Response): Promise<void> => {
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
       res.status(400).json({ error: 'Invalid recipe ID' });
+      return
     }
 
     const deletedRecipe = await Recipe.findByIdAndDelete(id);

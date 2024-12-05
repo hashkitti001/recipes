@@ -20,7 +20,7 @@ interface NewRecipeFormProps {
 }
 
 const NewRecipeForm: React.FC<NewRecipeFormProps> = ({ isOpen, setIsOpen }) => {
-  const token = localStorage?.recipeAccessToken;
+  const token = localStorage.getItem("recipeAppToken");
   const [recipeData, setRecipeData] = useState<RecipeInterface>({
     name: "",
     description: "",
@@ -234,7 +234,7 @@ const NewRecipeForm: React.FC<NewRecipeFormProps> = ({ isOpen, setIsOpen }) => {
               <input
                 type="submit"
                 value="Create"
-                className="self-center bg-blue-500 text-white py-2 px-4 cursor-pointer w-11/12 rounded-2xl"
+                className="self-center bg-100 text-white py-2 px-4 cursor-pointer w-11/12 rounded-2xl"
               />
             </form>
           </div>

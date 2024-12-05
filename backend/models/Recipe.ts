@@ -6,6 +6,10 @@ const recipeSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    creator: {
+        type: String, 
+        required: true
+    },
     description: {
         type: String, 
         required: true,
