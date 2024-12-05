@@ -44,7 +44,7 @@ async function loginUser(req: Request, res: Response): Promise<void> {
 async function signupUser(req: Request, res: Response) {
   try {
     const { name, email, password, confirmPassword, country } = req.body;
-
+    console.log(name, email, password, confirmPassword, country )
     if (!email || !password || !name || !confirmPassword || !country) {
       await res.status(400).json({ error: "All fields are required" });
       return; 
