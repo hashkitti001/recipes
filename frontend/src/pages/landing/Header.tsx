@@ -110,7 +110,7 @@ const Header: React.FC = () => {
                             </div>
                         </div>
                     ) : (
-                        <button className="bg-100 text-white py-2 px-6 rounded-full hover:opacity-85">
+                        <button className="bg-100 text-white py-2 px-6 rounded-md hover:opacity-85">
                             <Link className="text-white" to="/auth">Log In</Link>
                         </button>
                     )}

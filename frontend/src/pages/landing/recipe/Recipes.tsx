@@ -9,6 +9,7 @@ import RecipeItem from "../../../components/RecipeItem";
 import 'react-toastify/ReactToastify.min.css'
 import { FaSearch } from "react-icons/fa";
 import Footer from "../../../components/Footer";
+import { useNavigate } from "react-router-dom";
 interface RecipeInterface {
   _id: string;
   creator: string;
@@ -29,7 +30,14 @@ const Recipes = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const token = localStorage.getItem("recipeAppToken");
 
+  const navigate = useNavigate()
+    if(!token){
+      navigate("/auth")
+      window.location.href = "/auth"
+    }
+
   useEffect(() => {
+    
     const fetchData = async () => {
       try {
         const response = await axios.get("https://recipes-backend-0meq.onrender.com/api/recipes", {
