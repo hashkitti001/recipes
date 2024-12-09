@@ -6,11 +6,13 @@ import BackToTop from "../../../components/BackToTop";
 import Header from "../Header";
 import NewRecipeForm from "./NewRecipeForm";
 import RecipeItem from "../../../components/RecipeItem";
-import 'react-toastify/ReactToastify.min.css'
+import "react-toastify/ReactToastify.min.css";
 import { FaSearch } from "react-icons/fa";
 import Footer from "../../../components/Footer";
 import { useNavigate } from "react-router-dom";
+
 interface RecipeInterface {
+  imgURL: string;
   _id: string;
   creator: string;
   name: string;
@@ -20,25 +22,26 @@ interface RecipeInterface {
   calories: number;
   ingredients: string[];
   instructions: string[];
-  imageURL?: string;
   rating: number;
 }
 
 const Recipes = () => {
   const [fetchedRecipes, setFetchedRecipes] = useState<RecipeInterface[]>([]);
-  const [filteredRecipes, setFilteredRecipes] = useState<RecipeInterface[]>([]);
+  const [userRecipes, setUserRecipes] = useState<RecipeInterface[]>([]);
+  const [otherRecipes, setOtherRecipes] = useState<RecipeInterface[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const token = localStorage.getItem("recipeAppToken");
+  const {username} = JSON.parse(atob(token!.split(".")[1]))
+  const userId = localStorage.getItem("recipeAppUserId"); // Assuming you store user ID in localStorage
 
-  const navigate = useNavigate()
-    if(!token){
-      navigate("/auth")
-      window.location.href = "/auth"
-    }
+  const navigate = useNavigate();
+  if (!token) {
+    navigate("/auth");
+    window.location.href = "/auth";
+  }
 
   useEffect(() => {
-    
     const fetchData = async () => {
       try {
         const response = await axios.get("https://recipes-backend-0meq.onrender.com/api/recipes", {
@@ -46,15 +49,21 @@ const Recipes = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        setFetchedRecipes(response.data.allRecipes);
-        setFilteredRecipes(response.data.allRecipes);
+
+        const allRecipes = response.data.allRecipes;
+        const myRecipes = allRecipes.filter((recipe: RecipeInterface) => recipe.creator === username);
+        const othersRecipes = allRecipes.filter((recipe: RecipeInterface) => recipe.creator !== username);
+
+        setFetchedRecipes(allRecipes);
+        setUserRecipes(myRecipes);
+        setOtherRecipes(othersRecipes);
       } catch (error) {
         toast.error("Failed to fetch recipes");
         console.error("Error fetching recipes:", error);
       }
     };
     fetchData();
-  }, []);
+  }, [userId, token]);
 
   const toggleForm = () => {
     setIsOpen((prev) => !prev);
@@ -63,10 +72,16 @@ const Recipes = () => {
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     const term = event.target.value.toLowerCase();
     setSearchTerm(term);
-    const filtered = fetchedRecipes.filter((recipe) =>
-      recipe.name.toLowerCase().includes(term)
-    );
-    setFilteredRecipes(filtered);
+
+    const filteredMyRecipes = fetchedRecipes
+      .filter((recipe) => recipe.creator === userId)
+      .filter((recipe) => recipe.name.toLowerCase().includes(term));
+    const filteredOthersRecipes = fetchedRecipes
+      .filter((recipe) => recipe.creator !== userId)
+      .filter((recipe) => recipe.name.toLowerCase().includes(term));
+
+    setUserRecipes(filteredMyRecipes);
+    setOtherRecipes(filteredOthersRecipes);
   };
 
   return (
@@ -77,22 +92,53 @@ const Recipes = () => {
       <NewRecipeForm isOpen={isOpen} setIsOpen={setIsOpen} />
 
       <div className="layout-container flex-col gap-8 px-5">
+        {/* Recipes by Others */}
         <section className="m-5 p-6 bg-white shadow-md rounded-lg">
-          <h2 className="text-gray-700 text-xl mb-4">Available Recipes</h2>
+          <h2 className="text-gray-700 text-xl mb-4">Recipes by Others</h2>
 
           {/* Search Bar */}
-          
           <div className="relative flex justify-center">
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={handleSearch}
-            placeholder="Search recipes..."
-            className="w-4/5 mb-4 p-3 border bg-400 outline-none border-none rounded-full text-black"
-          />
-          <FaSearch className="text-2xl font-light text-100 right-36 top-2 absolute"/>
-      </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={handleSearch}
+              placeholder="Search recipes..."
+              className="w-4/5 mb-4 p-3 border bg-400 outline-none border-none rounded-full text-black"
+            />
+            <FaSearch className="text-2xl font-light text-100 right-36 top-2 absolute" />
+          </div>
+          <div className="flex flex-wrap gap-4">
+            {otherRecipes.map((recipe) => (
+              <RecipeItem
+                key={recipe._id}
+                _id={recipe._id}
+                creator={recipe.creator}
+                name={recipe.name}
+                duration={recipe.duration}
+                servings={recipe.servings}
+                imgURL={recipe.imgURL || ""}
+                calories={recipe.calories}
+                rating={recipe.rating}
+              />
+            ))}
+          </div>
+        </section>
+
+        {/* Your Recipes */}
+        <section className="m-5 p-6 bg-white shadow-md rounded-lg ">
+          <h2 className="text-gray-700 text-xl mb-4">Your Recipes</h2>
+
+          <div className="relative flex justify-center">
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={handleSearch}
+              placeholder="Search recipes..."
+              className="w-4/5 mb-4 p-3 border bg-400 outline-none border-none rounded-full text-black"
+            />
+            <FaSearch className="text-2xl font-light text-100 right-36 top-2 absolute" />
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <button
               onClick={toggleForm}
               aria-label="Add new recipe"
@@ -101,7 +147,7 @@ const Recipes = () => {
               <GoPlus className="text-4xl" />
             </button>
 
-            {filteredRecipes.map((recipe) => (
+            {userRecipes.map((recipe: RecipeInterface) => (
               <RecipeItem
                 key={recipe._id}
                 _id={recipe._id}
@@ -109,7 +155,7 @@ const Recipes = () => {
                 name={recipe.name}
                 duration={recipe.duration}
                 servings={recipe.servings}
-                imgURL={recipe.imageURL || ""}
+                imgURL={recipe.imgURL || ""}
                 calories={recipe.calories}
                 rating={recipe.rating}
               />
@@ -118,7 +164,7 @@ const Recipes = () => {
         </section>
         <BackToTop />
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 };

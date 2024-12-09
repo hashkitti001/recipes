@@ -2,9 +2,11 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Header from "../Header";
 import axios from "axios";
+import Loader from "../../../components/Loader";
 
 interface Recipe {
   id: string;
+  creator: string;
   name: string;
   description: string;
   imgURL?: string;
@@ -54,7 +56,7 @@ const RecipeDetails: React.FC = () => {
     }
   }, [recipe]);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <div><Loader/></div>;
   if (error) return <div className="error-message">{error}</div>;
   if (!recipe) return <div>Recipe not found.</div>;
 
@@ -64,6 +66,7 @@ const RecipeDetails: React.FC = () => {
       <div className="recipe-detail w-full mx-auto p-5 bg-white flex flex-col lg:flex-row justify-center items-center lg:space-x-8">
         <div className="flex-1">
           <h1 className="text-4xl font-bold text-center text-gray-800 mb-5">{recipe.name}</h1>
+          <h3 className="text-2xl font-lighter text-center text-gray-800 mb-4">By {recipe.creator}</h3>
           <p className="text-lg mb-8 text-gray-600">{recipe.description || "No description available."}</p>
 
           <h2 className="text-2xl font-semibold mb-4 text-gray-800">Ingredients</h2>

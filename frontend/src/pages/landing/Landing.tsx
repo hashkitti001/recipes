@@ -46,6 +46,7 @@ const Landing = () => {
               calories={item.calories}
               servings={item.servings}
               imgURL={item.imgURL}
+              rating={item.rating}
             />
           ))}
         </div>
