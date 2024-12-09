@@ -6,6 +6,11 @@
   font-family: 'Avenir';
   src: url('../src/assets/AvenirLTStd-Roman.otf');
 }
+
+@font-face {
+  font-family: 'Cedarville Cursive';
+  src:url('../src/assets/Caveat-VariableFont_wght.ttf')
+}
 :root {
   font-family: 'Avenir';
   line-height: 1.5;
@@ -20,6 +25,13 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.cursive {
+  font-family: 'Cedarville Cursive';
+
+}
+img {
+  max-width: 100% !important;
+}
 a {
   font-weight: 500;
   color: #646cff;

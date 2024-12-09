@@ -46,7 +46,7 @@ const Header: React.FC = () => {
                 </div>
 
             </div>
-            <Link className="font-bold text-xl text-black" to="/">Recipes</Link>
+            <Link className="font-bold text-3xl text-100 cursive" to="/">Recipes</Link>
             {/* Mobile Menu */}
             <nav
                 className={`fixed inset-0 bg-white flex flex-col  items-center justify-center gap-10 z-10 transform ${
@@ -87,7 +87,7 @@ const Header: React.FC = () => {
                                 className="text-5xl text-black cursor-pointer"
                                 onClick={toggleDropDown}
                             />
-                            <p className='text-300 text-lg text-wrap pl-3'>{`${username}`}</p>
+                            <p className='text-300 text-lg text-wrap px-5'>{`${username}`}</p>
                             </div>
                            
                             <div
