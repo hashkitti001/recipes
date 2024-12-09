@@ -36,6 +36,10 @@ const recipeSchema = new mongoose.Schema({
     },
     imgURL: {
         type: String,
+    },
+    rating: {
+        type: Number,
+        default: 0,
     }
 });
 

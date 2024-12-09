@@ -102,7 +102,7 @@ const AboutUs = () => {
               <FaPhone /> +1 (234) 567-890
             </a>
             <a href="mailto:info@yourrecipesite.com" className="flex items-center gap-2 text-white">
-              <FaEnvelope /> info@yourrecipesite.com
+              <FaEnvelope /> recipes@outlook.com
             </a>
             <a href="https://www.linkedin.com/company/yourrecipesite" className="flex items-center gap-2 text-white">
               <FaLinkedin /> LinkedIn

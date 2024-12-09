@@ -24,7 +24,7 @@ const getRecipeById = async (req: Request, res: Response): Promise<void> => {
     // }
 
     const recipe = await Recipe.findById(id);
-    
+
     if (!recipe) {
       res.status(404).json({ message: 'Recipe not found' });
       return
@@ -44,7 +44,7 @@ const createNewRecipe = async (req: Request, res: Response): Promise<void> => {
   try {
     const { name, description, servings, duration, ingredients, instructions, calories, imgURL } = req.body;
     console.log(req.body)
-    
+
     if (!name || !servings || !duration) {
       res.status(400).json({ error: 'Name, servings, and duration are required' });
       return
@@ -56,7 +56,7 @@ const createNewRecipe = async (req: Request, res: Response): Promise<void> => {
       return
     }
 
-   
+
     const newRecipe = new Recipe({
       name,
       creator: req.body.user,
@@ -73,14 +73,14 @@ const createNewRecipe = async (req: Request, res: Response): Promise<void> => {
       console.error('Error saving recipe:', error);
       throw error;
     });
-    
+
     res.status(201).json({ message: 'Recipe created successfully', recipe: newRecipe });
     return
   } catch (error) {
     res.status(500).json({ error: 'Failed to create recipe' });
     console.log(error)
     return
-   
+
   }
 };
 
@@ -109,4 +109,43 @@ const deleteRecipe = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export { getAllRecipes, getRecipeById, createNewRecipe, deleteRecipe };
+const updateRating = async (req: Request, res: Response) => {
+  /**
+   * Update the rating for a given recipe
+   */
+  try {
+    const { id } = req.params;
+    const { rating } = req.body;
+
+    if (typeof rating !== "number" || rating < 1 || rating > 5) {
+      res.status(400).json({ error: "Rating must be a number between 1 and 5" });
+      return
+    }
+
+ 
+    const recipe = await Recipe.findById(id);
+    if (!recipe) {
+      res.status(404).json({ error: "Couldn't rate non-existing recipe" });
+      return
+    }
+
+    
+    const updatedRecipe = await Recipe.findByIdAndUpdate(
+      id,
+      { rating },
+      { new: true } 
+    );
+
+    res.status(200).json({
+      message: "Successfully updated rating",
+      recipe: updatedRecipe,
+    });
+    return
+  } catch (error) {
+    console.error("Error updating rating:", error);
+    res.status(500).json({ error: "An error occurred while updating the rating" });
+    return
+  }
+};
+
+export { getAllRecipes, getRecipeById, createNewRecipe, deleteRecipe, updateRating };

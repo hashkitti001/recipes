@@ -21,6 +21,7 @@ interface RecipeInterface {
   ingredients: string[];
   instructions: string[];
   imageURL?: string;
+  rating: number;
 }
 
 const Recipes = () => {
@@ -110,6 +111,7 @@ const Recipes = () => {
                 servings={recipe.servings}
                 imgURL={recipe.imageURL || ""}
                 calories={recipe.calories}
+                rating={recipe.rating}
               />
             ))}
           </div>

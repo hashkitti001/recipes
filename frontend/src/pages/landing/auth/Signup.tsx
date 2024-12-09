@@ -83,7 +83,7 @@ const Signup = () => {
                 >
                    
                     {countriesData.map((country) => (
-                        <option value={country.name}>{country.name}</option>
+                        <option key={country.code} value={country.name}>{country.name}</option>
                     ))}
 
                 </select>
