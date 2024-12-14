@@ -24,15 +24,15 @@ const AuthPage = () => {
 
             <div className='w-1/2 bg-400 flex justify-center items-center max-md:w-full'>
                 <div className='flex flex-col items-center w-2/3'>
-                    <div className='flex justify-between bg-white p-3 rounded-3xl mb-5 w-full'>
+                    <div className='flex justify-between bg-white p-3 rounded-lg mb-5 w-full'>
                         <span
-                            className={`text-lg text-center p-3 rounded-3xl ${isLogin ? 'bg-100 text-white' : 'text-gray-600'} w-3/6`}
+                            className={`text-lg text-center p-3 rounded-lg ${isLogin ? 'bg-100 text-white' : 'text-gray-600'} w-3/6`}
                             onClick={toggleAction}
                         >
                             Log In
                         </span>
                         <span
-                            className={`text-lg text-center p-3 rounded-3xl ${!isLogin ? 'bg-100 text-white' : 'text-gray-600'} w-3/6`}
+                            className={`text-lg text-center p-3 rounded-lg ${!isLogin ? 'bg-100 text-white' : 'text-gray-600'} w-3/6`}
                             onClick={toggleAction}
                         >
                             Sign Up

@@ -1,66 +1,119 @@
-To build a recipe site with the functional requirements of signup, login, view recipes, create recipes, and delete recipes, you’ll need to implement a set of relevant API endpoints. Below is a structured outline of the essential endpoints, along with a brief description of each:
+# Recipe Management API
 
-### User Authentication Endpoints
+This API provides endpoints to manage recipes and user accounts. It is built using **Express.js** and **TypeScript**. This documentation outlines how to set up and run the application, as well as a summary of the available endpoints.
 
-1. **Signup**
-   - **Endpoint**: `POST /api/auth/signup`
-   - **Description**: Register a new user.
-   - **Request Body**: 
-     ```json
-     {
-       "username": "string",
-       "email": "string",
-       "password": "string"
-     }
+## Features
+- User authentication middleware to secure endpoints.
+- CRUD operations for recipes.
+- User management features.
+
+## Prerequisites
+Ensure you have the following installed:
+- Node.js (v14 or later)
+- npm or yarn
+
+## Setup Instructions
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   cd <repository-directory>
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Set up environment variables:
+   Create a `.env` file in the project root and configure the required environment variables. For example:
+   ```env
+   PORT=3000
+   JWT_SECRET=<your_jwt_secret>
+   DATABASE_URL=<your_database_url>
+   ```
+
+4. Build the TypeScript files:
+   ```bash
+   npm run build
+   ```
+
+5. Start the application:
+   - Development mode:
+     ```bash
+     npm run dev
      ```
-   - **Response**: User details or error message.
-
-2. **Login**
-   - **Endpoint**: `POST /api/auth/login`
-   - **Description**: Authenticate a user and return a JWT.
-   - **Request Body**: 
-     ```json
-     {
-       "email": "string",
-       "password": "string"
-     }
+   - Production mode:
+     ```bash
+     npm start
      ```
-   - **Response**: JWT token and user details or error message.
 
-### Recipe Endpoints
+## API Endpoints
+### Recipes
+- **Get all recipes**
+  ```http
+  GET /api/recipes
+  ```
+  Retrieves all recipes. Requires authentication.
 
-3. **View All Recipes**
-   - **Endpoint**: `GET /api/recipes`
-   - **Description**: Retrieve a list of all recipes.
-   - **Response**: Array of recipe objects.
+- **Get recipe by ID**
+  ```http
+  GET /api/recipe/:id
+  ```
+  Retrieves a specific recipe by ID. Requires authentication.
 
-4. **View a Single Recipe**
-   - **Endpoint**: `GET /api/recipes/:id`
-   - **Description**: Retrieve a specific recipe by ID.
-   - **Response**: Recipe object or error message.
+- **Create a new recipe**
+  ```http
+  POST /api/recipe/
+  ```
+  Creates a new recipe. Requires authentication.
 
-5. **Create a Recipe**
-   - **Endpoint**: `POST /api/recipes`
-   - **Description**: Add a new recipe.
-   - **Request Body**: 
-     ```json
-     {
-       "title": "string",
-       "ingredients": ["string"],
-       "instructions": "string",
-       "imageUrl": "string",
-       "userId": "string"
-     }
-     ```
-   - **Response**: Created recipe object or error message.
+- **Update recipe rating**
+  ```http
+  PUT /api/recipe/:id/rate
+  ```
+  Updates the rating of a recipe by ID. Requires authentication.
 
-6. **Delete a Recipe**
-   - **Endpoint**: `DELETE /api/recipes/:id`
-   - **Description**: Remove a specific recipe by ID.
-   - **Response**: Success message or error message.
+- **Delete a recipe**
+  ```http
+  DELETE /api/recipes/:id
+  ```
+  Deletes a recipe by ID. Requires authentication.
 
-// Use the middleware for protected routes
-router.post('/recipes', authenticateJWT, ...);
-router.delete('/recipes/:id', authenticateJWT, ...);
+### User Management
+- **Get user by ID**
+  ```http
+  GET /api/user/:id
+  ```
+  Retrieves user information by ID. Requires authentication.
+
+- **Update user information**
+  ```http
+  PUT /api/update-user
+  ```
+  Updates user information. Requires authentication.
+
+- **Delete user account**
+  ```http
+  DELETE /api/delete-user
+  ```
+  Deletes the authenticated user's account. Requires authentication.
+
+## Middleware
+### Authentication Middleware
+`authMiddleware` is applied to all endpoints to ensure only authenticated users can access them.
+
+## Project Structure
 ```
+src/
+├── controllers/         # Contains business logic for recipes and users
+├── middleware/          # Custom middleware, including authentication
+├── routes/              # Route definitions (e.g., privateRouter)
+├── app.ts               # Application setup
+├── server.ts            # Entry point for the server
+```
+
+## Scripts
+- `npm run build` - Compiles TypeScript to JavaScript.
+- `npm run dev` - Runs the application in development mode.
+- `npm start` - Runs the application in production mode.
 
